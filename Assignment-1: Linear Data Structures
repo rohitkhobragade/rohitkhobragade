@@ -1,0 +1,216 @@
+#Q1. Write a program to find all pairs of an integer array whose sum is equal to a given number?
+
+def sum(x, y):
+    pairs = []
+    seen = set()
+    for i in x:
+        a = y - i
+        if a in seen:
+            pairs.append((i, a))
+        seen.add(i)
+    return pairs
+x = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+y = 10
+result = sum(x, y)
+print(result)
+
+# *********************************************************************************************** #
+
+# Q2: Reverse an array in place.
+
+def reverse_array(x):
+    left = 0
+    right = len(x) - 1
+    while left < right:
+        x[left], x[right] = x[right], x[left]
+        left += 1
+        right -= 1
+z = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+reverse_array(z)
+print(z)
+
+# *********************************************************************************************** #
+
+# Q3: Check if two strings are a rotation of each other.
+
+def are_rotations(x, y):
+    if len(x) != len(y):
+        return False
+    a = x + x
+    if y in a:
+        return True
+    return False
+x1 = "abcdef"
+y2 = "defabc"
+result = are_rotations(x1, y2)
+print(result)
+
+# *********************************************************************************************** #
+
+# Q4: Find the first non-repeated character from a string.
+
+def first_non_repeated_character(a):
+    x = {}
+    for i in a:
+        if i in x:
+            x[i] += 1
+        else:
+            x[i] = 1
+    for i in a:
+        if x[i] == 1:
+            return i
+    return None
+word = "successfully"
+result = first_non_repeated_character(word)
+print(result)
+
+# *********************************************************************************************** #
+
+# Q5: Implement the Tower of Hanoi algorithm.
+
+def Tower_Of_Hanoi(n, from_rod, to_rod, aux_rod):
+    if n == 1:
+        return
+    Tower_Of_Hanoi(n-1, from_rod, aux_rod, to_rod)
+    print("Move disk", n, "from rod", from_rod, "to rod", to_rod)
+    Tower_Of_Hanoi(n-1, aux_rod, to_rod, from_rod)
+N = 4
+Tower_Of_Hanoi(N, 'A', 'C', 'B')
+
+# *********************************************************************************************** #
+
+# Q6: Convert postfix to prefix expression.
+
+def postfix_to_prefix(x):
+    stack = []
+    operators = set(['+', '-', '*', '/', '^'])
+    for i in x:
+        if i not in operators:
+            stack.append(i)
+        else:
+            operand2 = stack.pop()
+            operand1 = stack.pop()
+            prefix_expression = i + operand1 + operand2
+            stack.append(prefix_expression)
+    return stack[0]
+postfix_expr = "87+5*"
+prefix_expr = postfix_to_prefix(postfix_expr)
+print(prefix_expr)
+
+# *********************************************************************************************** #
+
+# Q7: Convert prefix expression to infix expression.
+
+def prefix_to_infix(x):
+    stack = []
+    operators = set(['+', '-', '*', '/', '^'])
+    x = x[::-1]
+    for i in x:
+        if i not in operators:
+            stack.append(i)
+        else:
+            operand1 = stack.pop()
+            operand2 = stack.pop()
+            infix_expression = f"({operand1}{i}{operand2})"
+            stack.append(infix_expression)
+    return stack[0]
+y = "*+875"
+z = prefix_to_infix(y)
+print(z)
+
+# *********************************************************************************************** #
+
+#Q8: Check if all the brackets are closed in a given code snippet.
+
+def brackets(x):
+    stack = []
+    a = {')': '(', ']': '[', '}': '{'}
+    opening_brackets = set(a.values())
+    for i in x:
+        if i in opening_brackets:
+            stack.append(i)
+        elif i in a:
+            if not stack or stack.pop() != a[i]:
+                return False
+    return not stack
+y = "{[([()])]}"
+z = brackets(y)
+print(z)
+
+# *********************************************************************************************** #
+
+# Q9: Reverse a stack.
+
+class Stack:
+    def __init__(self):
+        self.items = []
+    def push(self, item):
+        self.items.append(item)
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        else:
+            return None
+    def is_empty(self):
+        return len(self.items) == 0
+def reverse_stack(stack):
+    if stack.is_empty():
+        return
+    item = stack.pop()
+    reverse_stack(stack)
+    insert_at_bottom(stack, item)
+def insert_at_bottom(stack, item):
+    if stack.is_empty():
+        stack.push(item)
+    else:
+        temp = stack.pop()
+        insert_at_bottom(stack, item)
+        stack.push(temp)
+stack = Stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+stack.push(4)
+stack.push(5)
+stack.push(6)
+stack.push(7)
+stack.push(8)
+print("Original Stack:", stack.items)
+reverse_stack(stack)
+print("Reversed Stack:", stack.items)
+
+# *********************************************************************************************** #
+
+#Q10: Find the smallest number using a stack.
+
+class Stack:
+    def __init__(self):
+        self.items = []
+    def push(self, item):
+        self.items.append(item)
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        else:
+            return None
+    def is_empty(self):
+        return len(self.items) == 0
+def find_smallest_number(stack):
+    if stack.is_empty():
+        return None
+    min_num = stack.pop()
+    while not stack.is_empty():
+        num = stack.pop()
+        if num < min_num:
+            min_num = num
+    return min_num
+stack = Stack()
+stack.push(2250)
+stack.push(965)
+stack.push(146061)
+stack.push(995)
+smallest = find_smallest_number(stack)
+print("Smallest number in the stack:", smallest)
+
+
+
