@@ -1,1 +1,141 @@
+import random
+admin_data = []
+user_data = []
+food_items = []
+class Admin:
+    def __init__(self, name, password):
+        self.name = name
+        self.password = password
+class User:
+    def __init__(self, full_name, phone_number, email, address, password):
+        self.full_name = full_name
+        self.phone_number = phone_number
+        self.email = email
+        self.address = address
+        self.password = password
+        self.orders = []
+class FoodItem:
+    def __init__(self, name, quantity, price, discount, stock):
+        self.food_id = random.randint(1, 99)
+        self.name = name
+        self.quantity = quantity
+        self.price = price
+        self.discount = discount
+        self.stock = stock
+def add_food_item():
+    name = input("Enter food name: ")
+    quantity = input("Enter quantity: ")
+    price = float(input("Enter price: "))
+    discount = float(input("Enter discount: "))
+    stock = int(input("Enter stock quantity: "))
+    food_item = FoodItem(name, quantity, price, discount, stock)
+    food_items.append(food_item)
+    print("Food item added successfully!")
+def edit_food_item(food_id):
+    for item in food_items:
+        if item.food_id == food_id:
+            item.name = input("Enter new name: ")
+            item.quantity = input("Enter new quantity: ")
+            item.price = float(input("Enter new price: "))
+            item.discount = float(input("Enter new discount: "))
+            item.stock = int(input("Enter new stock quantity: "))
+            print("Food item updated successfully!")
+            return
+    print("Food item not found!")
+def view_food_items():
+    for item in food_items:
+        print(f"FoodID: {item.food_id}, Name: {item.name}, Quantity: {item.quantity}, Price: {item.price}, "
+              f"Discount: {item.discount}, Stock: {item.stock}")
+def remove_food_item(food_id):
+    for item in food_items:
+        if item.food_id == food_id:
+            food_items.remove(item)
+            print("Food item removed successfully!")
+            return
+    print("Food item not found!")
+def register_user():
+    full_name = input("Enter full name: ")
+    phone_number = input("Enter phone number: ")
+    email = input("Enter email: ")
+    address = input("Enter address: ")
+    password = input("Enter password: ")
+    user = User(full_name, phone_number, email, address, password)
+    user_data.append(user)
+    print("User registered successfully!")
+def login_user(email, password):
+    for user in user_data:
+        if user.email == email and user.password == password:
+            return user
+    return None
+def place_order(user):
+    print("Available Food Items:")
+    for i, item in enumerate(food_items, start=1):
+        print(f"{i}. {item.name} ({item.quantity}) [INR {item.price}]")
+    selected_items = input("Enter the numbers of the items you want to order (comma-separated): ").split(',')
+    selected_items = [int(item) for item in selected_items]
+    order_total = 0
+    order_details = []
+    for index in selected_items:
+        if 1 <= index <= len(food_items):
+            selected_item = food_items[index - 1]
+            order_details.append(selected_item)
+            order_total += selected_item.price
+    print("Selected Items:")
+    for item in order_details:
+        print(f"{item.name} ({item.quantity}) [INR {item.price}]")
+    confirm_order = input(f"Total amount: INR {order_total}. Confirm order (yes/no): ")
+    if confirm_order.lower() == "yes":
+        user.orders.append(order_details)
+        print("Order placed successfully!")
+    else:
+        print("Order canceled!")
+def view_order_history(user):
+    if user.orders:
+        for index, order in enumerate(user.orders, start=1):
+            print(f"Order {index}:")
+            for item in order:
+                print(f"{item.name} ({item.quantity}) [INR {item.price}]")
+            print("----------------------")
+    else:
+        print("No order history available!")
+while True:
+    print("Welcome to the R.R.K. Restaurant Management System")
+    print("1. Admin Login")
+    print("2. User Register")
+    print("3. User Login")
+    print("4. Exit")
+    choice = input("Enter your choice: ")
+    if choice == "1":
+        admin_name = input("Enter admin name: ")
+        admin_password = input("Enter admin password: ")
+    elif choice == "2":
+        register_user()
+    elif choice == "3":
+        email = input("Enter email: ")
+        password = input("Enter password: ")
+        user = login_user(email, password)
+        if user:
+            while True:
+                print("User Menu")
+                print("1. Place New Order")
+                print("2. Order History")
+                print("3. Update Profile")
+                print("4. Logout")
+                user_choice = input("Enter your choice: ")
+                if user_choice == "1":
+                    place_order(user)
+                elif user_choice == "2":
+                    view_order_history(user)
+                elif user_choice == "3":
+                    pass
+                elif user_choice == "4":
+                    break
+                else:
+                    print("Invalid choice!")
+        else:
+            print("Invalid email or password!")
+    elif choice == "4":
+        break
+    else:
+        print("Invalid choice!")
 
