@@ -1,1 +1,64 @@
+# Flower Shop Ordering To Go
+
+
+class Flower:
+    def __init__(self, name, price, quantity):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+    def __str__(self):
+        return f"{self.name} - ${self.price} per unit ({self.quantity} units available)"
+
+class Bouquet:
+    def __init__(self):
+        self.flowers = []
+
+    def add_flower(self, flower, quantity):
+        for _ in range(quantity):
+            self.flowers.append(flower)
+
+    def calculate_price(self):
+        total_price = sum(flower.price for flower in self.flowers)
+        return total_price
+
+class FlowerShop:
+    def __init__(self):
+        self.inventory = []
+
+    def add_flower_to_inventory(self, flower):
+        self.inventory.append(flower)
+
+    def check_inventory(self):
+        for flower in self.inventory:
+            if flower.quantity <= 5:
+                print(f"Low stock alert: Order more {flower.name}!")
+
+    def take_order(self, bouquet, order_price):
+        if bouquet.calculate_price() <= order_price:
+            print("Order placed successfully.")
+            return True
+        else:
+            print("Insufficient funds. Order not placed.")
+            return False
+
+# Create some flower objects and add them to the inventory
+rose = Flower("Rose", 2.5, 10)
+tulip = Flower("Tulip", 1.75, 8)
+lily = Flower("Lily", 3.0, 6)
+
+flower_shop = FlowerShop()
+flower_shop.add_flower_to_inventory(rose)
+flower_shop.add_flower_to_inventory(tulip)
+flower_shop.add_flower_to_inventory(lily)
+
+# Create a bouquet
+my_bouquet = Bouquet()
+my_bouquet.add_flower(rose, 2)
+my_bouquet.add_flower(tulip, 3)
+
+# Check inventory and take an order
+flower_shop.check_inventory()
+order_price = my_bouquet.calculate_price()
+flower_shop.take_order(my_bouquet, order_price)
 
